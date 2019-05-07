@@ -22,6 +22,11 @@ namespace NewsFeeds.DAL.Repositories.FeedRepository
             await _feeds.AddAsync(entity);
         }
 
+        public async Task<bool> ContainsEntity(string title, int feedCollectionId)
+        {
+            return await _feeds.AnyAsync(f => f.Title == title && f.FeedCollectionId == feedCollectionId);
+        }
+
         public override async Task<bool> ContainsEntityWithId(int id)
         {
             return await _feeds.AnyAsync(u => u.Id == id);

@@ -24,7 +24,12 @@ namespace NewsFeeds.DAL.Repositories.FeedCollectionRepository
 
         public override async Task<bool> ContainsEntityWithId(int id)
         {
-            return await _feedCollections.AnyAsync(u => u.Id == id);
+            return await _feedCollections.AnyAsync(fc => fc.Id == id);
+        }
+
+        public async Task<bool> ContainsFeedCollectionWithName(string name, int userId)
+        {
+            return await _feedCollections.AnyAsync(fc => fc.Name == name && fc.UserId == userId);
         }
 
         public override void Delete(int id)
@@ -35,17 +40,17 @@ namespace NewsFeeds.DAL.Repositories.FeedCollectionRepository
 
         public override IQueryable<FeedCollection> GetAll()
         {
-            return _feedCollections.Include(u => u.Feeds);
+            return _feedCollections.Include(fc => fc.Feeds);
         }
 
         public override async Task<FeedCollection> GetAsync(int id)
         {
-            return await _feedCollections.Include(u => u.Feeds).FirstOrDefaultAsync(u => u.Id == id);
+            return await _feedCollections.Include(fc => fc.Feeds).FirstOrDefaultAsync(fc => fc.Id == id);
         }
 
-        public IQueryable<Feed> GetFeedByFeedCollection(int feedCollectionId)
+        public IQueryable<Feed> GetFeedsByFeedCollection(int feedCollectionId)
         {
-            return _feedCollections.SelectMany(u => u.Feeds.Where(f => f.FeedCollectionId == feedCollectionId).Select(f => f));
+            return _feedCollections.SelectMany(fc => fc.Feeds.Where(f => f.FeedCollectionId == feedCollectionId).Select(f => f));
         }
 
         public override void Update(FeedCollection entity)
