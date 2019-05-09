@@ -15,6 +15,7 @@ using NewsFeeds.BLL.Services.Users;
 
 namespace NewsFeeds.API.Controllers
 {
+    [Route("api/[controller]")]
     public class FeedCollectionsController : Controller
     {
         private readonly IFeedCollectionService _feedCollectionService;

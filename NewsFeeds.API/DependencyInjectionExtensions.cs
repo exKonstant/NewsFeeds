@@ -12,6 +12,7 @@ using NewsFeeds.BLL.Services.Feeds;
 using NewsFeeds.BLL.Services.Users;
 using NewsFeeds.DAL.EF;
 using NewsFeeds.DAL.UnitOfWork;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace NewsFeeds.API
 {
@@ -39,20 +40,20 @@ namespace NewsFeeds.API
             return services;
         }
 
-        //public static IServiceCollection RegisterSwagger(this IServiceCollection services)
-        //{
-        //    services.AddSwaggerGen(c =>
-        //    {
-        //        c.SwaggerDoc("v1", new Info
-        //        {
-        //            Title = "NewsFeeds",
-        //            Version = "v1"
-        //        });
-        //        c.IncludeXmlComments(
-        //            @"bin\Debug\netcoreapp2.0\NewsFeeds.API.xml");
-        //    });
+        public static IServiceCollection RegisterSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "NewsFeeds",
+                    Version = "v1"
+                });
+                //c.IncludeXmlComments(
+                //    @"bin\Debug\netcoreapp2.0\NewsFeeds.API.xml");
+            });
 
-        //    return services;
-        //}        
+            return services;
+        }
     }
 }

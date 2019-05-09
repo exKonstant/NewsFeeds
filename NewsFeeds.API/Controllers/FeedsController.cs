@@ -15,6 +15,7 @@ using NewsFeeds.BLL.Services.Feeds;
 
 namespace NewsFeeds.API.Controllers
 {
+    [Route("api/[controller]")]
     public class FeedsController : Controller
     {
         private readonly IFeedService _feedService;
