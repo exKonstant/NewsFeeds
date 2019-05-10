@@ -15,7 +15,7 @@ using NewsFeeds.BLL.Services.Feeds;
 
 namespace NewsFeeds.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/feedCollections/{feedCollectionId}/feeds")]
     public class FeedsController : Controller
     {
         private readonly IFeedService _feedService;
@@ -36,7 +36,7 @@ namespace NewsFeeds.API.Controllers
             return _feedResponseCreator.ResponseForGetAll(feedDtos);
         }
 
-        [HttpGet("{id}", Name = "GetCollection")]
+        [HttpGet("{id}", Name = "GetFeed")]
         public async Task<IActionResult> Get(int id)
         {
             var feedDto = await _feedService.GetAsync(id);
@@ -53,7 +53,7 @@ namespace NewsFeeds.API.Controllers
 
             var feedDto = _mapper.Map<FeedDtoForCreate>(feedAddModel);
             var response = await _feedService.AddAsync(feedDto);
-            return _feedResponseCreator.ResponseForCreate(response/*, feedCollectionDto*/);
+            return _feedResponseCreator.ResponseForCreate(response/*, feedDto*/);
         }
 
         [HttpPut]

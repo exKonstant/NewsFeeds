@@ -32,8 +32,11 @@ namespace NewsFeeds.API
             services.ResolveDalDependencies(Configuration.GetConnectionString("NewsFeeds"));
             services.ResolveServicesDependencies();
 
+            services.AddMemoryCache();
+
             services.RegisterSwagger();
-            services.AddAutoMapper();
+
+            services.AddAutoMapper();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
