@@ -21,7 +21,7 @@ namespace NewsFeeds.API.Services.Feeds
             _mapper = mapper;
         }
 
-        public IActionResult ResponseForGetAll(IEnumerable<FeedDto> feedDtos)
+        public IActionResult ResponseForGetFeedsByFeedCollection(IEnumerable<FeedDto> feedDtos)
         {
             var feedModels = _mapper.Map<IEnumerable<FeedModel>>(feedDtos);
             return new OkObjectResult(feedModels);
@@ -49,8 +49,6 @@ namespace NewsFeeds.API.Services.Feeds
             {
                 case FeedResponse.InvalidTitle:
                     return new BadRequestObjectResult("Invalid title.");
-                case FeedResponse.InvalidLink:
-                    return new BadRequestObjectResult("Invalid link.");
                 case FeedResponse.FeedCollectionNotExist:
                     return new BadRequestObjectResult("Feed Collection doesn't exist.");
                 case FeedResponse.FeedWithTitleAlreadyExists:
@@ -68,8 +66,6 @@ namespace NewsFeeds.API.Services.Feeds
                     return new NotFoundResult();
                 case FeedResponse.InvalidTitle:
                     return new BadRequestObjectResult("Invalid title.");
-                case FeedResponse.InvalidLink:
-                    return new BadRequestObjectResult("Invalid link.");
                 default:
                     return new OkResult();
             }

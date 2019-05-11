@@ -8,7 +8,6 @@ namespace NewsFeeds.BLL.Enums
     {
         Ok,
         InvalidTitle,
-        InvalidLink,
         FeedWithTitleAlreadyExists,
         FeedNotExist,
         FeedCollectionNotExist

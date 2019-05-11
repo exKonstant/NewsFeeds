@@ -25,27 +25,21 @@ namespace NewsFeeds.BLL.Services.FeedCollections
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<FeedCollectionDto>> GetAllAsync()
+        public async Task<IEnumerable<FeedCollectionDto>> GetFeedCollectionByUserAsync(int userId)
         {
-            var feedCollections = await _unitOfWork.FeedCollections.GetAll().ToListAsync();
+            var feedCollections = await _unitOfWork.FeedCollections.GetFeedCollectionsByUser(userId).ToListAsync();
             return _mapper.Map<IEnumerable<FeedCollectionDto>>(feedCollections);
         }
 
-        public async Task<FeedCollectionDto> GetAsync(int id)
+        public async Task<FeedCollectionDto> GetAsync(int id, int userId)
         {
-            var feedCollections = await _unitOfWork.FeedCollections.GetAsync(id);
+            var feedCollections = await _unitOfWork.FeedCollections.GetAsync(id, userId);
             return _mapper.Map<FeedCollectionDto>(feedCollections);
         }
 
-        public async Task<IEnumerable<FeedDto>> GetFeedsByFeedCollectionAsync(int feedCollectionId)
+        public async Task<FeedCollectionResponse> AddAsync(int userId, FeedCollectionDtoForCreate feedCollectionDtoForCreate)
         {
-            var feeds = await _unitOfWork.FeedCollections.GetFeedsByFeedCollection(feedCollectionId).ToListAsync();
-            return _mapper.Map<IEnumerable<FeedDto>>(feeds);
-        }
-
-        public async Task<FeedCollectionResponse> AddAsync(FeedCollectionDtoForCreate feedCollectionDtoForCreate)
-        {
-            if (!await _unitOfWork.Users.ContainsEntityWithId(feedCollectionDtoForCreate.UserId))
+            if (!await _unitOfWork.Users.ContainsEntityWithId(userId))
             {
                 return FeedCollectionResponse.UserNotExist;
             }
@@ -53,17 +47,19 @@ namespace NewsFeeds.BLL.Services.FeedCollections
             {
                 return FeedCollectionResponse.InvalidName;
             }
-            if (await _unitOfWork.FeedCollections.ContainsFeedCollectionWithName(feedCollectionDtoForCreate.Name, feedCollectionDtoForCreate.UserId))
+            if (await _unitOfWork.FeedCollections.ContainsFeedCollectionWithName(feedCollectionDtoForCreate.Name, userId))
             {
                 return FeedCollectionResponse.FeedCollectionWithThisNameAlreadyExists;
             }
             var feedCollection = _mapper.Map<FeedCollection>(feedCollectionDtoForCreate);
+            feedCollection.UserId = userId;
+
             await _unitOfWork.FeedCollections.AddAsync(feedCollection);
             await _unitOfWork.SaveChangesAsync();
             return FeedCollectionResponse.Ok;
         }
 
-        public async Task<FeedCollectionResponse> UpdateAsync(FeedCollectionDtoForUpdate feedCollectionDtoForUpdate)
+        public async Task<FeedCollectionResponse> UpdateAsync(int userId, FeedCollectionDtoForUpdate feedCollectionDtoForUpdate)
         {
             if (string.IsNullOrEmpty(feedCollectionDtoForUpdate.Name))
             {
@@ -73,20 +69,20 @@ namespace NewsFeeds.BLL.Services.FeedCollections
             {
                 return FeedCollectionResponse.FeedCollectionNotExist;
             }
-            var feedCollection = await _unitOfWork.FeedCollections.GetAsync(feedCollectionDtoForUpdate.Id);
+            var feedCollection = await _unitOfWork.FeedCollections.GetAsync(feedCollectionDtoForUpdate.Id, userId);
             _mapper.Map(feedCollectionDtoForUpdate, feedCollection);
             _unitOfWork.FeedCollections.Update(feedCollection);
             await _unitOfWork.SaveChangesAsync();
             return FeedCollectionResponse.Ok;
         }
 
-        public async Task<FeedCollectionResponse> DeleteAsync(int id)
+        public async Task<FeedCollectionResponse> DeleteAsync(int id, int userId)
         {
             if (!await _unitOfWork.FeedCollections.ContainsEntityWithId(id))
             {
                 return FeedCollectionResponse.FeedCollectionNotExist;
             }
-            _unitOfWork.FeedCollections.Delete(id);
+            _unitOfWork.FeedCollections.Delete(id, userId);
             await _unitOfWork.SaveChangesAsync();
             return FeedCollectionResponse.Ok;
         }

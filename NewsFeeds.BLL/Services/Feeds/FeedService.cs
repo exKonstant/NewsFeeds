@@ -26,18 +26,18 @@ namespace NewsFeeds.BLL.Services.Feeds
             _memoryCache = memoryCache;
         }
 
-        public async Task<IEnumerable<FeedDto>> GetAllAsync()
+        public async Task<IEnumerable<FeedDto>> GetFeedsByFeedCollectionAsync(int feedCollectionId, int userId)
         {            
-            var feeds = await _unitOfWork.Feeds.GetAll().ToListAsync();
+            var feeds = await _unitOfWork.Feeds.GetFeedsByFeedCollection(feedCollectionId, userId).ToListAsync();
             return _mapper.Map<IEnumerable<FeedDto>>(feeds);
         }
 
-        public async Task<FeedDto> GetAsync(int id)
+        public async Task<FeedDto> GetAsync(int id, int feedCollectionId, int userId)
         {
             Feed feed;
-            if (_memoryCache.TryGetValue(id, out feed))
+            if (!_memoryCache.TryGetValue(id, out feed))
             {
-                feed = await _unitOfWork.Feeds.GetAsync(id);
+                feed = await _unitOfWork.Feeds.GetAsync(id, feedCollectionId, userId);
                 if (feed != null)
                 {
                     _memoryCache.Set(feed.Id, feed,
@@ -47,25 +47,23 @@ namespace NewsFeeds.BLL.Services.Feeds
             return _mapper.Map<FeedDto>(feed);
         }
 
-        public async Task<FeedResponse> AddAsync(FeedDtoForCreate feedDtoForCreate)
+        public async Task<FeedResponse> AddAsync(int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate)
         {
             if (string.IsNullOrEmpty(feedDtoForCreate.Title))
             {
                 return FeedResponse.InvalidTitle;
             }
-            if (string.IsNullOrEmpty(feedDtoForCreate.Link))
-            {
-                return FeedResponse.InvalidLink;
-            }
-            if (!await _unitOfWork.FeedCollections.ContainsEntityWithId(feedDtoForCreate.FeedCollectionId))
-            {
-                return FeedResponse.FeedCollectionNotExist;
-            }
-            if (await _unitOfWork.Feeds.ContainsEntity(feedDtoForCreate.Title, feedDtoForCreate.FeedCollectionId))
+            if (await _unitOfWork.Feeds.ContainsEntity(feedDtoForCreate.Title, feedCollectionId))
             {
                 return FeedResponse.FeedWithTitleAlreadyExists;
             }
+            if (!await _unitOfWork.FeedCollections.ContainsEntityWithIds(feedCollectionId, userId))
+            {
+                return FeedResponse.FeedCollectionNotExist;
+            }
             var feed = _mapper.Map<Feed>(feedDtoForCreate);
+            feed.FeedCollectionId = feedCollectionId;
+
             await _unitOfWork.Feeds.AddAsync(feed);
             await _unitOfWork.SaveChangesAsync();
 
@@ -78,7 +76,7 @@ namespace NewsFeeds.BLL.Services.Feeds
             return FeedResponse.Ok;
         }
 
-        public async Task<FeedResponse> UpdateAsync(FeedDtoForUpdate feedDtoForUpdate)
+        public async Task<FeedResponse> UpdateAsync(int feedCollectionId, int userId, FeedDtoForUpdate feedDtoForUpdate)
         {
             if (!await _unitOfWork.Feeds.ContainsEntityWithId(feedDtoForUpdate.Id))
             {
@@ -88,12 +86,8 @@ namespace NewsFeeds.BLL.Services.Feeds
             {
                 return FeedResponse.InvalidTitle;
             }
-            if (string.IsNullOrEmpty(feedDtoForUpdate.Link))
-            {
-                return FeedResponse.InvalidLink;
-            }
 
-            var feed = await _unitOfWork.Feeds.GetAsync(feedDtoForUpdate.Id);
+            var feed = await _unitOfWork.Feeds.GetAsync(feedDtoForUpdate.Id, feedCollectionId, userId);
             _mapper.Map(feedDtoForUpdate, feed);
             _unitOfWork.Feeds.Update(feed);
             await _unitOfWork.SaveChangesAsync();
@@ -107,13 +101,18 @@ namespace NewsFeeds.BLL.Services.Feeds
             return FeedResponse.Ok;
         }
 
-        public async Task<FeedResponse> DeleteAsync(int id)
+        public async Task<FeedResponse> DeleteAsync(int id, int feedCollectionId, int userId)
         {
             if (!await _unitOfWork.Feeds.ContainsEntityWithId(id))
             {
                 return FeedResponse.FeedNotExist;
             }
-            _unitOfWork.Feeds.Delete(id);
+
+            if (!await _unitOfWork.FeedCollections.ContainsEntityWithIds(feedCollectionId, userId))
+            {
+                return FeedResponse.FeedCollectionNotExist;
+            }
+            _unitOfWork.Feeds.Delete(id, feedCollectionId);
             await _unitOfWork.SaveChangesAsync();
 
             _memoryCache.Remove(id);

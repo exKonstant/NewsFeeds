@@ -7,10 +7,10 @@ namespace NewsFeeds.BLL.Services.Feeds
 {
     public interface IFeedService
     {
-        Task<IEnumerable<FeedDto>> GetAllAsync();
-        Task<FeedDto> GetAsync(int id);
-        Task<FeedResponse> AddAsync(FeedDtoForCreate feedDtoForCreate);
-        Task<FeedResponse> UpdateAsync(FeedDtoForUpdate feedDtoForUpdate);
-        Task<FeedResponse> DeleteAsync(int id);
+        Task<IEnumerable<FeedDto>> GetFeedsByFeedCollectionAsync(int feedCollectionId, int userId);
+        Task<FeedDto> GetAsync(int id, int feedCollectionId, int userId);
+        Task<FeedResponse> AddAsync(int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate);
+        Task<FeedResponse> UpdateAsync(int feedCollectionId, int userId, FeedDtoForUpdate feedDtoForUpdate);
+        Task<FeedResponse> DeleteAsync(int id, int feedCollectionId, int userId);
     }
 }

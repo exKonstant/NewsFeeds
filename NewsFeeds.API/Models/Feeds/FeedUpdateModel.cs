@@ -7,6 +7,7 @@ namespace NewsFeeds.API.Models.Feeds
 {
     public class FeedUpdateModel
     {
-
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

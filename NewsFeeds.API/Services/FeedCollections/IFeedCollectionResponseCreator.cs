@@ -10,7 +10,6 @@ namespace NewsFeeds.API.Services.FeedCollections
     {
         IActionResult ResponseForGetAll(IEnumerable<FeedCollectionDto> feedCollectionDtos);
         IActionResult ResponseForGet(FeedCollectionDto feedCollectionDto);
-        IActionResult ResponseForGetFeeds(IEnumerable<FeedDto> feedDtos);
         IActionResult ResponseForCreate(FeedCollectionResponse response);
         IActionResult ResponseForUpdate(FeedCollectionResponse response);
         IActionResult ResponseForDelete(FeedCollectionResponse response);

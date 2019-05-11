@@ -39,12 +39,6 @@ namespace NewsFeeds.API.Services.FeedCollections
             return new OkObjectResult(feedCollectionModel);
         }
 
-        public IActionResult ResponseForGetFeeds(IEnumerable<FeedDto> feedDtos)
-        {
-            var feedModels = _mapper.Map<IEnumerable<FeedModel>>(feedDtos);
-            return new OkObjectResult(feedModels);
-        }
-
         public IActionResult ResponseForCreate(FeedCollectionResponse response /*,FeedCollectionDtoForCreate feedCollectionDtoForCreate*/)
         {
             switch (response)

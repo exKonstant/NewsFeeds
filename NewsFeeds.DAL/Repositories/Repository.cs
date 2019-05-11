@@ -19,6 +19,7 @@ namespace NewsFeeds.DAL.Repositories
         public abstract Task AddAsync(TEntity entity);
         public abstract void Update(TEntity entity);
         public abstract Task<bool> ContainsEntityWithId(int id);
+        public virtual void Delete(int id, int entityId) { }
         public abstract void Delete(int id);
     }
 }

@@ -10,12 +10,13 @@ using NewsFeeds.API.Services.FeedCollections;
 using NewsFeeds.API.Services.Feeds;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
 using NewsFeeds.BLL.DTOs.FeedDTOs;
+using NewsFeeds.BLL.MappingProfiles;
 using NewsFeeds.BLL.Services.FeedCollections;
 using NewsFeeds.BLL.Services.Feeds;
 
 namespace NewsFeeds.API.Controllers
 {
-    [Route("api/feedCollections/{feedCollectionId}/feeds")]
+    [Route("api/{userId}/feedCollections/{feedCollectionId}/feeds")]
     public class FeedsController : Controller
     {
         private readonly IFeedService _feedService;
@@ -30,21 +31,21 @@ namespace NewsFeeds.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetFeedsByFeedCollection(int feedCollectionId, int userId)
         {
-            var feedDtos = await _feedService.GetAllAsync();
-            return _feedResponseCreator.ResponseForGetAll(feedDtos);
+            var feedDtos = await _feedService.GetFeedsByFeedCollectionAsync(feedCollectionId, userId);
+            return _feedResponseCreator.ResponseForGetFeedsByFeedCollection(feedDtos);
         }
 
         [HttpGet("{id}", Name = "GetFeed")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id, int feedCollectionId, int userId)
         {
-            var feedDto = await _feedService.GetAsync(id);
+            var feedDto = await _feedService.GetAsync(id, feedCollectionId, userId);
             return _feedResponseCreator.ResponseForGet(feedDto);
         }        
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] FeedAddModel feedAddModel)
+        public async Task<IActionResult> Add(int feedCollectionId, int userId, [FromBody] FeedAddModel feedAddModel)
         {
             if (!ModelState.IsValid)
             {
@@ -52,12 +53,12 @@ namespace NewsFeeds.API.Controllers
             }
 
             var feedDto = _mapper.Map<FeedDtoForCreate>(feedAddModel);
-            var response = await _feedService.AddAsync(feedDto);
+            var response = await _feedService.AddAsync(feedCollectionId, userId, feedDto);
             return _feedResponseCreator.ResponseForCreate(response/*, feedDto*/);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(int id, [FromBody] FeedUpdateModel feedUpdateModel)
+        public async Task<IActionResult> Update(int id, int feedCollectionId, int userId, [FromBody] FeedUpdateModel feedUpdateModel)
         {
             if (!ModelState.IsValid)
             {
@@ -67,14 +68,14 @@ namespace NewsFeeds.API.Controllers
             var feedDto =
                 _mapper.Map<FeedDtoForUpdate>(feedUpdateModel);
             feedDto.Id = id;
-            var response = await _feedService.UpdateAsync(feedDto);
+            var response = await _feedService.UpdateAsync(feedCollectionId, userId, feedDto);
             return _feedResponseCreator.ResponseForUpdate(response);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, int feedCollectionId, int userId)
         {
-            var response = await _feedService.DeleteAsync(id);
+            var response = await _feedService.DeleteAsync(id, feedCollectionId, userId);
             return _feedResponseCreator.ResponseForDelete(response);
         }
     }
