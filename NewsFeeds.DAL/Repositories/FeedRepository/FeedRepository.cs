@@ -37,7 +37,7 @@ namespace NewsFeeds.DAL.Repositories.FeedRepository
             return await _feeds.AnyAsync(u => u.Id == id);
         }
 
-        public void Delete(int id, int feedCollectionId)
+        public override void Delete(int id, int feedCollectionId)
         {
             var feed = new Feed { Id = id, FeedCollectionId = feedCollectionId};
             _feeds.Remove(feed);

@@ -31,6 +31,7 @@ namespace NewsFeeds.API
 
             services.ResolveDalDependencies(Configuration.GetConnectionString("NewsFeeds"));
             services.ResolveServicesDependencies();
+            services.ResolveIdentityDependencies(Configuration.GetConnectionString("NewsFeedsAuthentication"));
 
             services.AddMemoryCache();
 
@@ -53,6 +54,7 @@ namespace NewsFeeds.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NewsFeeds API v1"));

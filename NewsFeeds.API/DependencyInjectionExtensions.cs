@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NewsFeeds.API.Services.FeedCollections;
 using NewsFeeds.API.Services.Feeds;
 using NewsFeeds.API.Services.Users;
+using NewsFeeds.Authentication;
 using NewsFeeds.BLL.Services.FeedCollections;
 using NewsFeeds.BLL.Services.Feeds;
 using NewsFeeds.BLL.Services.Users;
@@ -52,6 +55,24 @@ namespace NewsFeeds.API
                 //c.IncludeXmlComments(
                 //    @"bin\Debug\netcoreapp2.0\NewsFeeds.API.xml");
             });
+
+            return services;
+        }
+
+        public static IServiceCollection ResolveIdentityDependencies(this IServiceCollection services,
+            string connectionString)
+        {
+            services.AddDbContext<IdentityContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddIdentity<Authentication.User, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                });
 
             return services;
         }
