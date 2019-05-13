@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.FeedCollections;
 using NewsFeeds.API.Models.Feeds;
 using NewsFeeds.API.Models.Users;
+using NewsFeeds.BLL;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
 using NewsFeeds.BLL.DTOs.FeedDTOs;
 using NewsFeeds.BLL.DTOs.UserDTOs;
@@ -39,40 +40,34 @@ namespace NewsFeeds.API.Services.FeedCollections
             return new OkObjectResult(feedCollectionModel);
         }
 
-        public IActionResult ResponseForCreate(FeedCollectionResponse response /*,FeedCollectionDtoForCreate feedCollectionDtoForCreate*/)
+        public IActionResult ResponseForCreate(Result result, int userId, FeedCollectionDtoForCreate feedCollectionDtoForCreate)
         {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case FeedCollectionResponse.UserNotExist:
-                    return new BadRequestObjectResult("User doesn't exist");
-                case FeedCollectionResponse.InvalidName:
-                    return new BadRequestObjectResult("Invalid name.");
-                case FeedCollectionResponse.FeedCollectionWithThisNameAlreadyExists:
-                    return new BadRequestObjectResult("Feed Collection with this name already exists.");
+                case true:
+                    return new BadRequestObjectResult(result.Message);
                 default:
-                    return new OkResult(); //CreatedAtRouteResult("GetUser", new { Id = statusCode }, userDtoForCreate);
+                    return new CreatedAtRouteResult("GetFeedCollection", new { feedCollectionId = ((Result<int>)result).Value, userId }, feedCollectionDtoForCreate);
             }
         }
 
-        public IActionResult ResponseForUpdate(FeedCollectionResponse response)
+        public IActionResult ResponseForUpdate(Result result)
         {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case FeedCollectionResponse.InvalidName:
-                    return new BadRequestObjectResult("Invalid name.");
-                case FeedCollectionResponse.FeedCollectionNotExist:
-                    return new NotFoundResult();
+                case true:
+                    return new BadRequestObjectResult(result.Message);
                 default:
                     return new OkResult();
             }
         }
 
-        public IActionResult ResponseForDelete(FeedCollectionResponse response)
+        public IActionResult ResponseForDelete(Result result)
         {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case FeedCollectionResponse.FeedCollectionNotExist:
-                    return new NotFoundResult();
+                case true:
+                    return new BadRequestObjectResult(result.Message);
                 default:
                     return new OkResult();
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.Users;
 using NewsFeeds.API.Services.Users;
@@ -11,7 +12,7 @@ using NewsFeeds.BLL.Services.Users;
 
 namespace NewsFeeds.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -25,6 +26,7 @@ namespace NewsFeeds.API.Controllers
             _userResponseCreator = userResponseCreator;
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -39,46 +41,17 @@ namespace NewsFeeds.API.Controllers
             return _userResponseCreator.ResponseForGet(userDto);
         }
 
-        [HttpGet("{userId}/feedCollections")]
-        public async Task<IActionResult> GetFeedCollectionsByUser(int userId)
-        {
-            var feedCollectionDtos = await _userService.GetFeedCollectionsByUserAsync(userId);
-            return _userResponseCreator.ResponseForGetFeedCollections(feedCollectionDtos);
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] UserAddOrUpdateModel userAddOrUpdateModel)
+        public async Task<IActionResult> Add([FromBody] UserAddModel userAddModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var userDto = _mapper.Map<UserDtoForCreate>(userAddOrUpdateModel);
+            var userDto = _mapper.Map<UserDtoForCreate>(userAddModel);
             var response = await _userService.AddAsync(userDto);
-            return _userResponseCreator.ResponseForCreate(response/*, userDto*/);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> Update(int id, [FromBody] UserAddOrUpdateModel userAddOrUpdateModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            var userDto =
-                _mapper.Map<UserDto>(userAddOrUpdateModel);
-            userDto.Id = id;
-            var response = await _userService.UpdateAsync(userDto);
-            return _userResponseCreator.ResponseForUpdate(response);
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var response = await _userService.DeleteAsync(id);
-            return _userResponseCreator.ResponseForDelete(response);
+            return _userResponseCreator.ResponseForCreate(response, userDto);
         }
     }
 }

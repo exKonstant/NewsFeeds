@@ -9,8 +9,8 @@ namespace NewsFeeds.BLL.Services.Feeds
     {
         Task<IEnumerable<FeedDto>> GetFeedsByFeedCollectionAsync(int feedCollectionId, int userId);
         Task<FeedDto> GetAsync(int id, int feedCollectionId, int userId);
-        Task<FeedResponse> AddAsync(int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate);
-        Task<FeedResponse> UpdateAsync(int feedCollectionId, int userId, FeedDtoForUpdate feedDtoForUpdate);
-        Task<FeedResponse> DeleteAsync(int id, int feedCollectionId, int userId);
+        Task<Result> AddAsync(int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate);
+        Task<Result> UpdateAsync(int feedCollectionId, int userId, FeedDtoForUpdate feedDtoForUpdate);
+        Task<Result> DeleteAsync(int id, int feedCollectionId, int userId);
     }
 }

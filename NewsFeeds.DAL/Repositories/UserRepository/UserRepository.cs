@@ -43,11 +43,6 @@ namespace NewsFeeds.DAL.Repositories.UserRepository
             return await _users.Include(u => u.FeedCollections).FirstOrDefaultAsync(u=> u.Id == id);
         }
 
-        public IQueryable<FeedCollection> GetFeedCollectionsByUser(int userId)
-        {
-            return _users.SelectMany(u => u.FeedCollections.Where(fc => fc.UserId == userId).Select(fc => fc));
-        }
-
         public override void Update(User entity)
         {
             _users.Update(entity);            

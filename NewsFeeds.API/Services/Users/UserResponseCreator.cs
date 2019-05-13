@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.FeedCollections;
 using NewsFeeds.API.Models.Users;
+using NewsFeeds.BLL;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
 using NewsFeeds.BLL.DTOs.UserDTOs;
 using NewsFeeds.BLL.Enums;
@@ -37,49 +38,16 @@ namespace NewsFeeds.API.Services.Users
             return new OkObjectResult(userModel);
         }
 
-        public IActionResult ResponseForGetFeedCollections(IEnumerable<FeedCollectionDto> feedCollectionDtos)
+        public IActionResult ResponseForCreate(Result result, UserDtoForCreate userDtoForCreate)
         {
-            var feedCollectionModels = _mapper.Map<IEnumerable<FeedCollectionModel>>(feedCollectionDtos);
-            return new OkObjectResult(feedCollectionModels);
-        }
-
-        public IActionResult ResponseForCreate(UserResponse response /*,UserDtoForCreate userDtoForCreate*/)
-        {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case UserResponse.InvalidFirstName:
-                    return new BadRequestObjectResult("Invalid firstname.");
-                case UserResponse.InvalidLastName:
-                    return new BadRequestObjectResult("Invalid lastname.");
+                case true:
+                    return new BadRequestObjectResult(result.Message);
                 default:
-                    return new OkResult();//CreatedAtRouteResult("GetUser", new { Id = statusCode }, userDtoForCreate);
+                    return new CreatedAtRouteResult("GetUser", new { Id = ((Result<int>)result).Value }, userDtoForCreate);
             }
-        }
-
-        public IActionResult ResponseForUpdate(UserResponse response)
-        {
-            switch (response)
-            {
-                case UserResponse.InvalidFirstName:
-                    return new BadRequestObjectResult("Invalid firstname.");
-                case UserResponse.InvalidLastName:
-                    return new BadRequestObjectResult("Invalid lastname.");
-                case UserResponse.NotExist:
-                    return new NotFoundResult();
-                default:
-                    return new OkResult();
-            }
-        }
-        public IActionResult ResponseForDelete(UserResponse response)
-        {
-            switch (response)
-            {
-                case UserResponse.NotExist:
-                    return new NotFoundResult();                
-                default:
-                    return new OkResult();
-            }
-        }
+        }        
     }
 }
 

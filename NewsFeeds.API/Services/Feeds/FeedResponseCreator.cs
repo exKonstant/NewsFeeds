@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.FeedCollections;
 using NewsFeeds.API.Models.Feeds;
+using NewsFeeds.BLL;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
 using NewsFeeds.BLL.DTOs.FeedDTOs;
 using NewsFeeds.BLL.Enums;
@@ -37,46 +38,34 @@ namespace NewsFeeds.API.Services.Feeds
             return new OkObjectResult(feedModel);
         }
 
-        //public IActionResult ResponseForGetFeeds(IEnumerable<FeedDto> feedDtos)
-        //{
-        //    var feedModels = _mapper.Map<IEnumerable<FeedModel>>(feedDtos);
-        //    return new OkObjectResult(feedModels);
-        //}
-
-        public IActionResult ResponseForCreate(FeedResponse response /*,FeedDtoForCreate feedDtoForCreate*/)
+        public IActionResult ResponseForCreate(Result result, int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate)
         {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case FeedResponse.InvalidTitle:
-                    return new BadRequestObjectResult("Invalid title.");
-                case FeedResponse.FeedCollectionNotExist:
-                    return new BadRequestObjectResult("Feed Collection doesn't exist.");
-                case FeedResponse.FeedWithTitleAlreadyExists:
-                    return new BadRequestObjectResult("Feed with this title already exists.");
+                case true:
+                    return new BadRequestObjectResult(result.Message);                
                 default:
-                    return new OkResult(); //CreatedAtRouteResult("GetFeed", new { Id = statusCode }, FeedDtoForCreate);
+                    return new CreatedAtRouteResult("GetFeed", new { Id = ((Result<int>)result).Value, feedCollectionId, userId }, feedDtoForCreate);
             }
         }
 
-        public IActionResult ResponseForUpdate(FeedResponse response)
+        public IActionResult ResponseForUpdate(Result result)
         {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case FeedResponse.FeedNotExist:
-                    return new NotFoundResult();
-                case FeedResponse.InvalidTitle:
-                    return new BadRequestObjectResult("Invalid title.");
+                case true:
+                    return new BadRequestObjectResult(result.Message);
                 default:
                     return new OkResult();
             }
         }
 
-        public IActionResult ResponseForDelete(FeedResponse response)
+        public IActionResult ResponseForDelete(Result result)
         {
-            switch (response)
+            switch (result.IsFailure)
             {
-                case FeedResponse.FeedNotExist:
-                    return new NotFoundResult();
+                case true:
+                    return new BadRequestObjectResult(result.Message);
                 default:
                     return new OkResult();
             }

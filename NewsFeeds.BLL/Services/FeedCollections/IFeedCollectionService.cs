@@ -10,8 +10,8 @@ namespace NewsFeeds.BLL.Services.FeedCollections
     {
         Task<IEnumerable<FeedCollectionDto>> GetFeedCollectionByUserAsync(int userId);
         Task<FeedCollectionDto> GetAsync(int id, int userId);
-        Task<FeedCollectionResponse> AddAsync(int userId, FeedCollectionDtoForCreate feedCollectionDtoForCreate);
-        Task<FeedCollectionResponse> UpdateAsync(int userId, FeedCollectionDtoForUpdate feedCollectionDtoForUpdate);
-        Task<FeedCollectionResponse> DeleteAsync(int id, int userId);
+        Task<Result> AddAsync(int userId, FeedCollectionDtoForCreate feedCollectionDtoForCreate);
+        Task<Result> UpdateAsync(int userId, FeedCollectionDtoForUpdate feedCollectionDtoForUpdate);
+        Task<Result> DeleteAsync(int id, int userId);
     }
 }

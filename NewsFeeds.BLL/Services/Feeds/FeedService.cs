@@ -47,19 +47,19 @@ namespace NewsFeeds.BLL.Services.Feeds
             return _mapper.Map<FeedDto>(feed);
         }
 
-        public async Task<FeedResponse> AddAsync(int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate)
+        public async Task<Result> AddAsync(int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate)
         {
             if (string.IsNullOrEmpty(feedDtoForCreate.Title))
             {
-                return FeedResponse.InvalidTitle;
+                return Result.Fail("Invalid title");
             }
             if (await _unitOfWork.Feeds.ContainsEntity(feedDtoForCreate.Title, feedCollectionId))
             {
-                return FeedResponse.FeedWithTitleAlreadyExists;
+                return Result.Fail("Feed with title already exists");
             }
             if (!await _unitOfWork.FeedCollections.ContainsEntityWithIds(feedCollectionId, userId))
             {
-                return FeedResponse.FeedCollectionNotExist;
+                return Result.Fail("Feed collection doesn't exist");
             }
             var feed = _mapper.Map<Feed>(feedDtoForCreate);
             feed.FeedCollectionId = feedCollectionId;
@@ -73,18 +73,22 @@ namespace NewsFeeds.BLL.Services.Feeds
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
 
-            return FeedResponse.Ok;
+            return Result.Ok(feed.Id);
         }
 
-        public async Task<FeedResponse> UpdateAsync(int feedCollectionId, int userId, FeedDtoForUpdate feedDtoForUpdate)
+        public async Task<Result> UpdateAsync(int feedCollectionId, int userId, FeedDtoForUpdate feedDtoForUpdate)
         {
             if (!await _unitOfWork.Feeds.ContainsEntityWithId(feedDtoForUpdate.Id))
             {
-                return FeedResponse.FeedNotExist;
+                return Result.Fail("Feed doesn't exist");
             }
             if (string.IsNullOrEmpty(feedDtoForUpdate.Title))
             {
-                return FeedResponse.InvalidTitle;
+                return Result.Fail("Invalid title");
+            }
+            if (await _unitOfWork.Feeds.ContainsEntity(feedDtoForUpdate.Title, feedCollectionId))
+            {
+                return Result.Fail("Feed with title already exists");
             }
 
             var feed = await _unitOfWork.Feeds.GetAsync(feedDtoForUpdate.Id, feedCollectionId, userId);
@@ -98,26 +102,26 @@ namespace NewsFeeds.BLL.Services.Feeds
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
 
-            return FeedResponse.Ok;
+            return Result.Ok("Ok");
         }
 
-        public async Task<FeedResponse> DeleteAsync(int id, int feedCollectionId, int userId)
+        public async Task<Result> DeleteAsync(int id, int feedCollectionId, int userId)
         {
             if (!await _unitOfWork.Feeds.ContainsEntityWithId(id))
             {
-                return FeedResponse.FeedNotExist;
+                return Result.Fail("Feed doesn't exist");
             }
 
             if (!await _unitOfWork.FeedCollections.ContainsEntityWithIds(feedCollectionId, userId))
             {
-                return FeedResponse.FeedCollectionNotExist;
+                return Result.Fail("Feed collection doesn't exist");
             }
             _unitOfWork.Feeds.Delete(id, feedCollectionId);
             await _unitOfWork.SaveChangesAsync();
 
             _memoryCache.Remove(id);
 
-            return FeedResponse.Ok;
+            return Result.Ok("Ok");
         }
     }
 }

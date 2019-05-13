@@ -10,6 +10,7 @@ using NewsFeeds.API.Services.FeedCollections;
 using NewsFeeds.API.Services.Feeds;
 using NewsFeeds.API.Services.Users;
 using NewsFeeds.Authentication;
+using NewsFeeds.Authentication.Services;
 using NewsFeeds.BLL.Services.FeedCollections;
 using NewsFeeds.BLL.Services.Feeds;
 using NewsFeeds.BLL.Services.Users;
@@ -39,6 +40,8 @@ namespace NewsFeeds.API
             services.AddScoped<IFeedResponseCreator, FeedResponseCreator>();
             services.AddScoped<IFeedCollectionResponseCreator, FeedCollectionResponseCreator>();
             services.AddScoped<IUserResponseCreator, UserResponseCreator>();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             return services;
         }

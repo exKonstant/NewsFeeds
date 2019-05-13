@@ -37,54 +37,59 @@ namespace NewsFeeds.BLL.Services.FeedCollections
             return _mapper.Map<FeedCollectionDto>(feedCollections);
         }
 
-        public async Task<FeedCollectionResponse> AddAsync(int userId, FeedCollectionDtoForCreate feedCollectionDtoForCreate)
+        public async Task<Result> AddAsync(int userId, FeedCollectionDtoForCreate feedCollectionDtoForCreate)
         {
             if (!await _unitOfWork.Users.ContainsEntityWithId(userId))
             {
-                return FeedCollectionResponse.UserNotExist;
+                return Result.Fail("User doesn't exist");
             }
             if (string.IsNullOrEmpty(feedCollectionDtoForCreate.Name))
             {
-                return FeedCollectionResponse.InvalidName;
+                return Result.Fail("Invalid name");
             }
             if (await _unitOfWork.FeedCollections.ContainsFeedCollectionWithName(feedCollectionDtoForCreate.Name, userId))
             {
-                return FeedCollectionResponse.FeedCollectionWithThisNameAlreadyExists;
+                return Result.Fail("Feed collection with this name already exists");
             }
             var feedCollection = _mapper.Map<FeedCollection>(feedCollectionDtoForCreate);
             feedCollection.UserId = userId;
 
             await _unitOfWork.FeedCollections.AddAsync(feedCollection);
             await _unitOfWork.SaveChangesAsync();
-            return FeedCollectionResponse.Ok;
+            return Result.Ok(feedCollection.Id);
         }
 
-        public async Task<FeedCollectionResponse> UpdateAsync(int userId, FeedCollectionDtoForUpdate feedCollectionDtoForUpdate)
+        public async Task<Result> UpdateAsync(int userId, FeedCollectionDtoForUpdate feedCollectionDtoForUpdate)
         {
-            if (string.IsNullOrEmpty(feedCollectionDtoForUpdate.Name))
-            {
-                return FeedCollectionResponse.InvalidName;
-            }
             if (!await _unitOfWork.FeedCollections.ContainsEntityWithId(feedCollectionDtoForUpdate.Id))
             {
-                return FeedCollectionResponse.FeedCollectionNotExist;
+                return Result.Fail("Feed collection doesn't exist");
             }
+            if (string.IsNullOrEmpty(feedCollectionDtoForUpdate.Name))
+            {
+                return Result.Fail("Invalid name");
+            }
+            if (await _unitOfWork.FeedCollections.ContainsFeedCollectionWithName(feedCollectionDtoForUpdate.Name, userId))
+            {
+                return Result.Fail("Feed collection with this name already exists");
+            }
+
             var feedCollection = await _unitOfWork.FeedCollections.GetAsync(feedCollectionDtoForUpdate.Id, userId);
             _mapper.Map(feedCollectionDtoForUpdate, feedCollection);
             _unitOfWork.FeedCollections.Update(feedCollection);
             await _unitOfWork.SaveChangesAsync();
-            return FeedCollectionResponse.Ok;
+            return Result.Ok("Ok");
         }
 
-        public async Task<FeedCollectionResponse> DeleteAsync(int id, int userId)
+        public async Task<Result> DeleteAsync(int id, int userId)
         {
             if (!await _unitOfWork.FeedCollections.ContainsEntityWithId(id))
             {
-                return FeedCollectionResponse.FeedCollectionNotExist;
+                return Result.Fail("Feed collection doesn't exist");
             }
             _unitOfWork.FeedCollections.Delete(id, userId);
             await _unitOfWork.SaveChangesAsync();
-            return FeedCollectionResponse.Ok;
+            return Result.Ok("Ok");
         }
     }
 }

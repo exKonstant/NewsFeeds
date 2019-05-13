@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.FeedCollections;
 using NewsFeeds.API.Models.Users;
@@ -15,7 +16,8 @@ using NewsFeeds.BLL.Services.Users;
 
 namespace NewsFeeds.API.Controllers
 {
-    [Route("api/userId/feedCollections")]
+    [Authorize(Roles = "user")]
+    [Route("api/{userId}/feedCollections")]
     public class FeedCollectionsController : Controller
     {
         private readonly IFeedCollectionService _feedCollectionService;
@@ -44,7 +46,7 @@ namespace NewsFeeds.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(int userId, [FromBody] FeedCollectionAddModel feedCollectionAddModel)
+        public async Task<IActionResult> Add(int userId, [FromBody] FeedCollectionUpdateModel feedCollectionAddModel)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +55,7 @@ namespace NewsFeeds.API.Controllers
 
             var feedCollectionDto = _mapper.Map<FeedCollectionDtoForCreate>(feedCollectionAddModel);
             var response = await _feedCollectionService.AddAsync(userId, feedCollectionDto);
-            return _feedCollectionResponseCreator.ResponseForCreate(response/*, feedCollectionDto*/);
+            return _feedCollectionResponseCreator.ResponseForCreate(response, userId, feedCollectionDto);
         }
 
         [HttpPut]

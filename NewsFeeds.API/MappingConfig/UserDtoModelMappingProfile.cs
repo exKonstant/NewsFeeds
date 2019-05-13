@@ -13,8 +13,8 @@ namespace NewsFeeds.API.MappingConfig
         public UserDtoModelMappingProfile()
         {
             CreateMap<UserDto, UserModel>().ReverseMap();
-            CreateMap<UserAddOrUpdateModel, UserDtoForCreate>().ReverseMap();
-            CreateMap<UserAddOrUpdateModel, UserDto>().ReverseMap();
+            CreateMap<UserAddModel, UserDtoForCreate>().ReverseMap();
+            CreateMap<UserAddModel, UserDto>().ReverseMap();
         }
     }
 }
