@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace NewsFeeds.API.Models.Users
+﻿namespace NewsFeeds.API.Models.Users
 {
     public class UserModel
     {

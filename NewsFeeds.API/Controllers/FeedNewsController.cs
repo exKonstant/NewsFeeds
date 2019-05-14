@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Services.FeedNews;
 using NewsFeeds.BLL.Services.FeedNews;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.API.Controllers
 {
-    [Authorize(Roles = "user")]    
     public class FeedNewsController : Controller
     {
         private readonly IFeedNewsService _feedNewsService;

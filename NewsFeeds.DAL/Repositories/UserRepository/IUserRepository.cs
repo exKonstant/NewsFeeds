@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NewsFeeds.DAL.Entities;
+﻿using NewsFeeds.DAL.Entities;
 
 namespace NewsFeeds.DAL.Repositories.UserRepository
 {

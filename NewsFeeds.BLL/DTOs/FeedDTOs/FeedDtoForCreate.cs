@@ -1,7 +1,5 @@
-﻿using System;
+﻿using NewsFeeds.BLL.Common.FeedNewsBusinessModel;
 using System.Collections.Generic;
-using System.Text;
-using NewsFeeds.BLL.Common.FeedNewsBusinessModel;
 
 namespace NewsFeeds.BLL.DTOs.FeedDTOs
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NewsFeeds.DAL
+﻿namespace NewsFeeds.DAL
 {
     public abstract class Entity
     {

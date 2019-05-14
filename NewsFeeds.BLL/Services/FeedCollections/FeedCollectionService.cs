@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
-using NewsFeeds.BLL.DTOs.FeedDTOs;
-using NewsFeeds.BLL.DTOs.UserDTOs;
-using NewsFeeds.BLL.Services.FeedCollections;
 using NewsFeeds.DAL.Entities;
 using NewsFeeds.DAL.UnitOfWork;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.BLL.Services.FeedCollections
 {

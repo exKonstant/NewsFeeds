@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using NewsFeeds.DAL.Entities;
+using System.Linq;
 using System.Threading.Tasks;
-using NewsFeeds.DAL.Entities;
 
 namespace NewsFeeds.DAL.Repositories.FeedRepository
 {

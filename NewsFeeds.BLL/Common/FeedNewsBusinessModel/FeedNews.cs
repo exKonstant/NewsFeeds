@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NewsFeeds.BLL.Common.FeedNewsBusinessModel
+﻿namespace NewsFeeds.BLL.Common.FeedNewsBusinessModel
 {
     public class FeedNews
     {

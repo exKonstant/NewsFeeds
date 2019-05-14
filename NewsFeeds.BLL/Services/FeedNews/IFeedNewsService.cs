@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using NewsFeeds.BLL.DTOs.FeedDTOs;
 
 namespace NewsFeeds.BLL.Services.FeedNews
 {

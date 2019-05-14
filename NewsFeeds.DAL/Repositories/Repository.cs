@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NewsFeeds.DAL.EF;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using NewsFeeds.DAL.EF;
 
 namespace NewsFeeds.DAL.Repositories
 {

@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NewsFeeds.Authentication\NewsFeeds.Authentication.csproj" />
     <ProjectReference Include="..\NewsFeeds.BLL\NewsFeeds.BLL.csproj" />
   </ItemGroup>
 

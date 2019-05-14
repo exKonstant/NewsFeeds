@@ -1,17 +1,15 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using NewsFeeds.BLL.DTOs.FeedDTOs;
+using NewsFeeds.DAL.Entities;
+using NewsFeeds.DAL.UnitOfWork;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using NewsFeeds.BLL.Common;
-using NewsFeeds.BLL.DTOs.FeedDTOs;
-using NewsFeeds.BLL.Common.FeedNewsBusinessModel;
-using NewsFeeds.DAL.Entities;
-using NewsFeeds.DAL.UnitOfWork;
 
 namespace NewsFeeds.BLL.Services.FeedNews
 {

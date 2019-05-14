@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NewsFeeds.DAL.EF;
 using NewsFeeds.DAL.Entities;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.DAL.Repositories.FeedRepository
 {

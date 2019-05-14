@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.FeedCollections;
-using NewsFeeds.API.Models.Users;
 using NewsFeeds.API.Services.FeedCollections;
-using NewsFeeds.API.Services.Users;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
-using NewsFeeds.BLL.DTOs.UserDTOs;
 using NewsFeeds.BLL.Services.FeedCollections;
-using NewsFeeds.BLL.Services.Users;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.API.Controllers
 {
-    [Authorize(Roles = "user")]
     [Route("api/{userId}/feedCollections")]
     public class FeedCollectionsController : Controller
     {

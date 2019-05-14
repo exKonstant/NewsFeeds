@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NewsFeeds.DAL.Entities
+﻿namespace NewsFeeds.DAL.Entities
 {
     public class Feed : Entity
     {

@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NewsFeeds.API.Services.FeedCollections;
 using NewsFeeds.API.Services.FeedNews;
 using NewsFeeds.API.Services.Feeds;
 using NewsFeeds.API.Services.Users;
-using NewsFeeds.Authentication;
-using NewsFeeds.Authentication.Services;
-using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.Services.FeedCollections;
 using NewsFeeds.BLL.Services.FeedNews;
 using NewsFeeds.BLL.Services.Feeds;
@@ -46,8 +37,6 @@ namespace NewsFeeds.API
             services.AddScoped<IUserResponseCreator, UserResponseCreator>();
             services.AddScoped<IFeedNewsResponseCreator, FeedNewsResponseCreator>();
 
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-
             return services;
         }
 
@@ -63,24 +52,6 @@ namespace NewsFeeds.API
             });
 
             return services;
-        }
-
-        public static IServiceCollection ResolveIdentityDependencies(this IServiceCollection services,
-            string connectionString)
-        {
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlServer(connectionString));
-
-            services.AddIdentity<Authentication.User, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>();
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                });
-
-            return services;
-        }
+        }       
     }
 }

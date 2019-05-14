@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NewsFeeds.BLL.Common
+﻿namespace NewsFeeds.BLL.Common
 {
     public class Result
     {

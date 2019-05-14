@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using NewsFeeds.BLL.Common;
-using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
 using NewsFeeds.BLL.DTOs.FeedDTOs;
 using NewsFeeds.BLL.Services.FeedNews;
 using NewsFeeds.DAL.Entities;
 using NewsFeeds.DAL.UnitOfWork;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.BLL.Services.Feeds
 {
@@ -62,10 +60,6 @@ namespace NewsFeeds.BLL.Services.Feeds
             if (string.IsNullOrEmpty(feedDtoForCreate.Title))
             {
                 return Result.Fail("Invalid title");
-            }
-            if (await _unitOfWork.Feeds.ContainsEntity(feedDtoForCreate.Title, feedCollectionId))
-            {
-                return Result.Fail("Feed with title already exists");
             }
             if (!await _unitOfWork.FeedCollections.ContainsEntityWithIds(feedCollectionId, userId))
             {

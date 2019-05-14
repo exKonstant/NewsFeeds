@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,7 +24,6 @@ namespace NewsFeeds.API
 
             services.ResolveDalDependencies(Configuration.GetConnectionString("NewsFeeds"));
             services.ResolveServicesDependencies();
-            services.ResolveIdentityDependencies(Configuration.GetConnectionString("NewsFeedsAuthentication"));
 
             services.AddMemoryCache();
 
@@ -51,8 +45,6 @@ namespace NewsFeeds.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseAuthentication();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NewsFeeds API v1"));
