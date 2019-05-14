@@ -8,7 +8,6 @@ namespace NewsFeeds.DAL.Repositories
         Task<TEntity> GetAsync(int id);
         IQueryable<TEntity> GetAll();        
         Task AddAsync(TEntity entity);
-        void Update(TEntity entity);
         Task<bool> ContainsEntityWithId(int id);
         void Delete(int id);
         void Delete(int id, int entityId);

@@ -42,10 +42,5 @@ namespace NewsFeeds.DAL.Repositories.UserRepository
         {
             return await _users.Include(u => u.FeedCollections).FirstOrDefaultAsync(u=> u.Id == id);
         }
-
-        public override void Update(User entity)
-        {
-            _users.Update(entity);            
-        }
     }
 }

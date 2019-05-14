@@ -47,32 +47,12 @@ namespace NewsFeeds.API.Controllers
         }        
 
         [HttpPost]
-        public async Task<IActionResult> Add(int feedCollectionId, int userId, [FromBody] FeedAddModel feedAddModel)
+        public async Task<IActionResult> AddToCollection(int feedCollectionId, int userId, string feedUrl)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            var feedDto = _mapper.Map<FeedDtoForCreate>(feedAddModel);
-            var response = await _feedService.AddAsync(feedCollectionId, userId, feedDto);
-            return _feedResponseCreator.ResponseForCreate(response, feedCollectionId, userId, feedDto);
+            var response = await _feedService.AddAsync(feedCollectionId, userId, feedUrl);
+            return _feedResponseCreator.ResponseForCreate(response, feedCollectionId, userId, feedUrl);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(int id, int feedCollectionId, int userId, [FromBody] FeedUpdateModel feedUpdateModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            var feedDto =
-                _mapper.Map<FeedDtoForUpdate>(feedUpdateModel);
-            feedDto.Id = id;
-            var response = await _feedService.UpdateAsync(feedCollectionId, userId, feedDto);
-            return _feedResponseCreator.ResponseForUpdate(response);
-        }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id, int feedCollectionId, int userId)

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using NewsFeeds.API.Models.FeedCollections;
 using NewsFeeds.API.Models.Feeds;
-using NewsFeeds.BLL;
-using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
+using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.DTOs.FeedDTOs;
-using NewsFeeds.BLL.Enums;
+using System.Collections.Generic;
 
 namespace NewsFeeds.API.Services.Feeds
 {
@@ -38,25 +32,14 @@ namespace NewsFeeds.API.Services.Feeds
             return new OkObjectResult(feedModel);
         }
 
-        public IActionResult ResponseForCreate(Result result, int feedCollectionId, int userId, FeedDtoForCreate feedDtoForCreate)
+        public IActionResult ResponseForCreate(Result result, int feedCollectionId, int userId, string feedUrl)
         {
             switch (result.IsFailure)
             {
                 case true:
                     return new BadRequestObjectResult(result.Message);                
                 default:
-                    return new CreatedAtRouteResult("GetFeed", new { Id = ((Result<int>)result).Value, feedCollectionId, userId }, feedDtoForCreate);
-            }
-        }
-
-        public IActionResult ResponseForUpdate(Result result)
-        {
-            switch (result.IsFailure)
-            {
-                case true:
-                    return new BadRequestObjectResult(result.Message);
-                default:
-                    return new OkResult();
+                    return new CreatedAtRouteResult("GetFeed", new { Id = ((Result<int>)result).Value, feedCollectionId, userId }, feedUrl);
             }
         }
 

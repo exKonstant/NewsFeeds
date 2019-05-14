@@ -68,10 +68,5 @@ namespace NewsFeeds.DAL.Repositories.FeedRepository
         {
             return await _feeds.FirstOrDefaultAsync(u => u.Id == id && u.FeedCollectionId == feedCollectionId && u.FeedCollection.UserId == userId);
         }
-
-        public override void Update(Feed entity)
-        {
-            _feeds.Update(entity);
-        }
     }
 }

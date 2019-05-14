@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
+﻿using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.DTOs.UserDTOs;
-using NewsFeeds.BLL.Enums;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.BLL.Services.Users
 {
@@ -11,7 +10,6 @@ namespace NewsFeeds.BLL.Services.Users
         Task<IEnumerable<UserDto>> GetAllAsync();
         Task<UserDto> GetAsync(int id);
         Task<Result> AddAsync(UserDtoForCreate userDtoForCreate);
-        Task<Result> UpdateAsync(UserDto userDto);
         Task<Result> DeleteAsync(int id);
     }
 }

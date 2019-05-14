@@ -14,8 +14,6 @@ namespace NewsFeeds.API.MappingConfig
         public FeedDtoModelMappingProfile()
         {
             CreateMap<FeedDto, FeedModel>().ReverseMap();
-            CreateMap<FeedAddModel, FeedDtoForCreate>().ReverseMap();
-            CreateMap<FeedUpdateModel, FeedDtoForUpdate>().ReverseMap();
         }
     }
 }

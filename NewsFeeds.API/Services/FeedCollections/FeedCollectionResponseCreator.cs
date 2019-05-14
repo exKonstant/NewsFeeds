@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeeds.API.Models.FeedCollections;
-using NewsFeeds.API.Models.Feeds;
-using NewsFeeds.API.Models.Users;
-using NewsFeeds.BLL;
+using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
-using NewsFeeds.BLL.DTOs.FeedDTOs;
-using NewsFeeds.BLL.DTOs.UserDTOs;
-using NewsFeeds.BLL.Enums;
+using System.Collections.Generic;
 
 namespace NewsFeeds.API.Services.FeedCollections
 {

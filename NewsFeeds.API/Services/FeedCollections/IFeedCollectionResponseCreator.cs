@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using NewsFeeds.BLL;
+﻿using Microsoft.AspNetCore.Mvc;
+using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
-using NewsFeeds.BLL.DTOs.FeedDTOs;
-using NewsFeeds.BLL.Enums;
+using System.Collections.Generic;
 
 namespace NewsFeeds.API.Services.FeedCollections
 {

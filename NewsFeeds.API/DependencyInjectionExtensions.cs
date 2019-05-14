@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NewsFeeds.API.Services.FeedCollections;
+using NewsFeeds.API.Services.FeedNews;
 using NewsFeeds.API.Services.Feeds;
 using NewsFeeds.API.Services.Users;
 using NewsFeeds.Authentication;
 using NewsFeeds.Authentication.Services;
+using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.Services.FeedCollections;
+using NewsFeeds.BLL.Services.FeedNews;
 using NewsFeeds.BLL.Services.Feeds;
 using NewsFeeds.BLL.Services.Users;
 using NewsFeeds.DAL.EF;
@@ -36,10 +39,12 @@ namespace NewsFeeds.API
             services.AddScoped<IFeedService, FeedService>();
             services.AddScoped<IFeedCollectionService, FeedCollectionService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFeedNewsService, FeedNewsService>();
 
             services.AddScoped<IFeedResponseCreator, FeedResponseCreator>();
             services.AddScoped<IFeedCollectionResponseCreator, FeedCollectionResponseCreator>();
             services.AddScoped<IUserResponseCreator, UserResponseCreator>();
+            services.AddScoped<IFeedNewsResponseCreator, FeedNewsResponseCreator>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
@@ -55,8 +60,6 @@ namespace NewsFeeds.API
                     Title = "NewsFeeds",
                     Version = "v1"
                 });
-                //c.IncludeXmlComments(
-                //    @"bin\Debug\netcoreapp2.0\NewsFeeds.API.xml");
             });
 
             return services;

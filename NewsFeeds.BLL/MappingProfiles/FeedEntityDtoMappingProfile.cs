@@ -10,7 +10,6 @@ namespace NewsFeeds.BLL.MappingProfiles
         {
             CreateMap<FeedDto, Feed>().ReverseMap();
             CreateMap<FeedDtoForCreate, Feed>().ReverseMap();
-            CreateMap<FeedDtoForUpdate, Feed>().ReverseMap();
         }
     }
 }

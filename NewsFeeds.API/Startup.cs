@@ -27,8 +27,6 @@ namespace NewsFeeds.API
             services.AddMvc().AddJsonOptions(opt =>
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-
-
             services.ResolveDalDependencies(Configuration.GetConnectionString("NewsFeeds"));
             services.ResolveServicesDependencies();
             services.ResolveIdentityDependencies(Configuration.GetConnectionString("NewsFeedsAuthentication"));

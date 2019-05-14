@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsFeeds.BLL
+namespace NewsFeeds.BLL.Common
 {
     public class Result
     {

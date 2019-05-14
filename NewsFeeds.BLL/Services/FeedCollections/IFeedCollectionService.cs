@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using NewsFeeds.BLL.Common;
 using NewsFeeds.BLL.DTOs.FeedCollectionDTOs;
-using NewsFeeds.BLL.DTOs.FeedDTOs;
-using NewsFeeds.BLL.Enums;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NewsFeeds.BLL.Services.FeedCollections
 {
